@@ -1,3 +1,7 @@
+{{ config(
+    tags=['skip']
+) }}
+
 with source as (
     
     {#-

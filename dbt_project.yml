@@ -25,6 +25,10 @@ seeds:
 
 models:
   jaffle_shop:
+    +pre-hook:
+      - "INSTALL https"
+      - "LOAD https"
+      - "SET s3_region='us-east-2'"
     +materialized: table
     staging:
       +materialized: view
