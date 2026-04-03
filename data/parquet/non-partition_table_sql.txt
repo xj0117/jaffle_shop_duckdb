@@ -1,0 +1,6 @@
+COPY (
+  SELECT *
+  FROM read_csv_auto('s3://dbt-learn-sample-data/raw_orders.csv')
+)
+TO 'data/parquet/orders.parquet'
+(FORMAT PARQUET);

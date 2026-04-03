@@ -30,4 +30,5 @@ select  cast(id as varchar) as order_id,
         cast(subtotal as int) as subtotal,
         cast(tax_paid as int) as tax_paid,
         cast(order_total as int) as order_total
-from read_csv_auto('s3://dbt-learn-sample-data/raw_orders.csv')
+-- from read_csv_auto('s3://dbt-learn-sample-data/raw_orders.csv')
+from 'data/parquet/orders.parquet'

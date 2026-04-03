@@ -23,4 +23,5 @@
 
 select cast(id as varchar) as customer_id,
        cast(name as varchar) as customer_name
-from read_csv_auto('s3://dbt-learn-sample-data/raw_customers.csv')
+-- from read_csv_auto('s3://dbt-learn-sample-data/raw_customers.csv')
+from 'data/parquet/customers.parquet'
