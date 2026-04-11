@@ -5,10 +5,12 @@ COPY (
   FROM read_csv_auto('{{ s3_path }}')
 )
 TO 'data/parquet/{{ table_name }}.parquet'
-(FORMAT PARQUET
+(
+  FORMAT PARQUET
 {% if partition_by %}
 , PARTITION_BY ({{ partition_by }})
 {% endif %}
+  , OVERWRITE_OR_IGNORE TRUE
 );
 
 {% endmacro %}
