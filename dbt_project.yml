@@ -23,6 +23,14 @@ seeds:
   +docs:
     node_color: '#cd7f32'
 
+on-run-start:
+  - "{{ generate_non_partition_parquet('customers', 's3://dbt-learn-sample-data/raw_customers.csv') }}"
+  - "{{ generate_non_partition_parquet('items', 's3://dbt-learn-sample-data/raw_items.csv') }}"
+  - "{{ generate_partition_parquet('orders', 's3://dbt-learn-sample-data/raw_orders.csv', 'ordered_at') }}"
+  - "{{ generate_non_partition_parquet('products', 's3://dbt-learn-sample-data/raw_products.csv') }}"
+  - "{{ generate_partition_parquet('stores', 's3://dbt-learn-sample-data/raw_stores.csv', 'opened_at') }}"
+  - "{{ generate_non_partition_parquet('supplies', 's3://dbt-learn-sample-data/raw_supplies.csv') }}"
+
 models:
   jaffle_shop:
     +pre-hook:

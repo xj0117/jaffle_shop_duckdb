@@ -29,6 +29,7 @@ select  cast(id as varchar) as order_id,
         cast(store_id as varchar) as store_id,
         cast(subtotal as int) as subtotal,
         cast(tax_paid as int) as tax_paid,
-        cast(order_total as int) as order_total
+        cast(order_total as int) as order_total,
+        cast(date as varchar) as date
 -- from read_csv_auto('s3://dbt-learn-sample-data/raw_orders.csv')
-from 'data/parquet/orders.parquet'
+from read_parquet('data/parquet/orders/**/*.parquet', hive_partitioning=true)
