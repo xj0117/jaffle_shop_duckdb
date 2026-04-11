@@ -85,3 +85,23 @@ models:
         description: Amount of the order (AUD) paid for by gift card
         tests:
           - not_null
+
+  - name: fact_orders
+    description: This table has basic information about orders, as well as some derived facts based on customers and items
+
+    columns:
+      - name: order_id
+        tests:
+          - not_null
+          - unique
+        description: This is a unique identifier for an order
+
+      - name: customer_id
+        tests:
+          - not_null
+        description: Foreign key to the customers table
+
+      - name: order_date
+        tests:
+          - not_null
+        description: Date (UTC) that the order was placed
