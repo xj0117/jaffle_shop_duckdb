@@ -22,6 +22,9 @@
 -- select * from renamed
 
 select cast(id as varchar) as customer_id,
-       cast(name as varchar) as customer_name
+       cast(name as varchar) as customer_name,
+       md5(
+        coalesce(name, 'NULL')
+       ) as hash_diff
 -- from read_csv_auto('s3://dbt-learn-sample-data/raw_customers.csv')
 from 'data/parquet/customers.parquet'
