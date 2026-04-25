@@ -105,3 +105,9 @@ models:
         tests:
           - not_null
         description: Date (UTC) that the order was placed
+
+  - name: dim_customers
+    description: This is a slowly changing dimension table that tracks changes in customer information over time. It is used to join to the fact_orders table to get the customer information that was valid at the time of the order.
+    tests:
+      - scd2_no_overlap:
+          key_column: customer_id
