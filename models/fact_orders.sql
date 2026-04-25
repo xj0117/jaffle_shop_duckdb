@@ -22,8 +22,43 @@ with orders as (
 
 customers as (
 
+    select 
+        customer_id, 
+        customer_name, 
+        cast(valid_from as date) as valid_from, 
+        cast(valid_to as date) as valid_to
+    from {{ ref('dim_customers') }}
+
+),
+
+orders_with_customers as (
+
     select *
-    from {{ ref('stg_customers') }}
+    from (
+
+        select
+            o.*,
+            c.customer_id,
+            c.customer_name,
+
+            row_number() over (
+                partition by o.order_id
+                order by 
+                    case 
+                        when o.order_date >= c.valid_from then 0 
+                        else 1 
+                    end
+                    ,c.valid_from desc
+            ) as rn
+
+        from orders o
+        left join customers c
+            on o.customer_id = c.customer_id
+        and o.order_date >= c.valid_from
+        and o.order_date < coalesce(c.valid_to, '9999-12-31')
+
+    ) t
+    where rn = 1
 
 ),
 
@@ -50,7 +85,7 @@ final as (
 
         -- 维度
         o.customer_id,
-        c.customer_name,
+        o.customer_name,
 
         o.store_id,
         s.name as store_name,
@@ -71,9 +106,7 @@ final as (
             else 'normal'
         end as order_segment
 
-    from orders o
-    left join customers c
-        on o.customer_id = c.customer_id
+    from orders_with_customers o
     left join stores s
         on o.store_id = s.store_id
     left join order_items oi
