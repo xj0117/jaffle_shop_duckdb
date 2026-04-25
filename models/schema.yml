@@ -109,5 +109,15 @@ models:
   - name: dim_customers
     description: This is a slowly changing dimension table that tracks changes in customer information over time. It is used to join to the fact_orders table to get the customer information that was valid at the time of the order.
     tests:
+
+      # 🧠 1. SCD2 时间不重叠（核心）
       - scd2_no_overlap:
+          key_column: customer_id
+
+      # 🧠 2. 当前版本唯一
+      - unique_current_version:
+          key_column: customer_id
+
+      # 🧠 3. 当前版本只能有一条
+      - single_current_row:
           key_column: customer_id
